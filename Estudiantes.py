@@ -61,11 +61,11 @@ p1 = st.sidebar.slider("Parcial 1", 0.0, 100.0, 70.0)
 p2 = st.sidebar.slider("Parcial 2", 0.0, 100.0, 70.0)
 p3 = st.sidebar.slider("Parcial 3", 0.0, 100.0, 70.0)
 tp = st.sidebar.slider("Trabajos Prácticos", 0.0, 100.0, 75.0)
-final = st.sidebar.slider("Examen Final", 0.0, 100.0, 70.0)
 asistencia = st.sidebar.slider("Asistencia (%)", 0.0, 100.0, 85.0)
 
 # ------------------------------
 # 🔮 Predicción del modelo
+# (usa SOLO las features del entrenamiento)
 # ------------------------------
 X_nuevo = pd.DataFrame({
     "Parcial_1": [p1],
@@ -83,7 +83,7 @@ clas_pred_modelo = clasificar(nota_pred_modelo)
 # ------------------------------
 bono = tp * 0.20 if asistencia > 95 else 0
 tp_modificado = tp + bono
-final_usable = 0 if asistencia < 80 else final
+final_usable = np.mean(df["Examen_Final"]) if asistencia >= 80 else 0  # usa promedio histórico del final
 
 nota_reglas = (
     0.1333 * p1 +
@@ -142,9 +142,7 @@ with col2:
 # 📌 Matriz de confusión
 # ------------------------------
 st.subheader("📌 Matriz de Confusión del Modelo")
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-
-X = df[["Parcial_1","Parcial_2","Parcial_3","Asistencia"]]
+X = df[["Parcial_1","Parcial_2","Parcial_3","Asistencia"]]  # ojo: igual que el modelo
 y_real = df["Nota_Final_Calculada"]
 y_pred = modelo.predict(X)
 
