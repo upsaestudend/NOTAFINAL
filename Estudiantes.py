@@ -102,3 +102,31 @@ with col2:
     sns.histplot(df["Nota_Final_Calculada"], bins=20, kde=True, ax=ax2, color="orange")
     ax2.set_title("Histograma de Notas Finales")
     st.pyplot(fig2)
+
+# ------------------------------
+# 📦 Boxplot de notas por clasificación
+# ------------------------------
+st.subheader("📦 Distribución de notas por clasificación")
+fig3, ax3 = plt.subplots()
+sns.boxplot(x="Clasificacion", y="Nota_Final_Calculada", data=df, palette="Set2", ax=ax3)
+ax3.set_title("Boxplot de Notas por Clasificación")
+st.pyplot(fig3)
+
+# ------------------------------
+# 📌 Relación Asistencia vs Nota Final
+# ------------------------------
+st.subheader("📌 Relación Asistencia vs Nota Final")
+fig4, ax4 = plt.subplots()
+sns.scatterplot(x="Asistencia", y="Nota_Final_Calculada", hue="Clasificacion", data=df, palette="Set1", ax=ax4)
+ax4.set_title("Asistencia vs Nota Final")
+st.pyplot(fig4)
+
+# ------------------------------
+# 📊 Promedio de notas por parcial
+# ------------------------------
+st.subheader("📊 Promedio por Parcial")
+parciales_mean = df[["Parcial_1", "Parcial_2", "Parcial_3"]].mean()
+fig5, ax5 = plt.subplots()
+parciales_mean.plot(kind="bar", ax=ax5, color=["#1f77b4","#ff7f0e","#2ca02c"])
+ax5.set_title("Promedio de cada Parcial")
+st.pyplot(fig5)
